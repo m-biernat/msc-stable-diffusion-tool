@@ -1,0 +1,19 @@
+{
+  "name": "com.m-biernat.sd-tool",
+  "version": "1.0.0",
+  "displayName": "SD Tool",
+  "description": "A simple tool providing in-editor asset creation with Stable Diffusion",
+  "unity": "2021.3",
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.1.0",
+    "com.unity.2d.sprite": "1.0.0"
+  },
+  "keywords": [
+    "stable",
+    "diffusion",
+    "tool"
+  ],
+  "author": {
+    "name": "Micha\u0142 Biernat"
+  }
+}
