@@ -11,12 +11,20 @@ namespace SDTool.Profile
         [field: SerializeField]
         public ControlNetData ControlNet { get; private set; }
 
-
         [field: SerializeField, Dropdown(new string[]
         {
-            "None", "u2net", "u2netp", "u2net_human_seg",
+            "u2net", "u2netp", "u2net_human_seg",
             "u2net_cloth_seg", "silueta"
         })]
-        public string RemoveBackground { get; private set; } = "None";
+        public string RemBgModel { get; private set; } = "u2net";
+
+        [field: SerializeField]
+        public bool UseControlNet { get; private set; }
+
+        [field: SerializeField]
+        public bool UseRemBg { get; private set; }
+
+        [field: SerializeField]
+        public bool AutoSaveImages { get; private set; }
     }
 }

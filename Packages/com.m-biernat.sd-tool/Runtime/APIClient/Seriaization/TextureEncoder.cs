@@ -5,6 +5,7 @@ namespace SDTool.APIClient.Serialization
 {
     public static class TextureEncoder
     {
+        // Check texture2d.LoadImage(...) !!!
         public static string Texture2DToBase64(Texture2D texture)
         {
             var imageData = texture.EncodeToPNG();

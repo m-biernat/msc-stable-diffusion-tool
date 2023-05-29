@@ -12,15 +12,15 @@ namespace SDTool.Profile
 
         [field: SerializeField, Space(), Dropdown(new string[]
         {
-            "none", "canny"
+            "canny"
         })]
-        public string Preprocessor { get; private set; }
+        public string Preprocessor { get; private set; } = "canny";
 
         [field: SerializeField, Dropdown(new string[]
         {
-            "None", "control_v11p_sd15_canny [d14c016b]"
+            "control_v11p_sd15_canny [d14c016b]"
         })]
-        public string Model { get; private set; }
+        public string Model { get; private set; } = "control_v11p_sd15_canny [d14c016b]";
 
         [field: SerializeField, Range(0, 2), Space()]
         public float ControlWeight { get; private set; } = 1;
@@ -51,5 +51,36 @@ namespace SDTool.Profile
 
         [field: SerializeField]
         public bool LowVRAM { get; private set; }
+
+        public CNetPreprocessT2D GetPreprocessPayload()
+        {
+            return new CNetPreprocessT2D()
+            {
+                InputImages = new Texture2D[] { InputImage },
+                Module = Preprocessor,
+                ProcessorRes = PreprocessorResolution,
+                TresholdA = TresholdA,
+                TresholdB = TresholdB
+            };
+        }
+
+        public CNetUnitT2D GetPayload()
+        {
+            return new CNetUnitT2D()
+            {
+                InputImage = InputImage,
+                Module = Preprocessor,
+                Model = Model,
+                Weight = ControlWeight,
+                GuidanceStart = StartingControlStep,
+                GuidanceEnd = EndingControlStep,
+                ProcessorRes = PreprocessorResolution,
+                TresholdA = TresholdA,
+                TresholdB = TresholdB,
+                ControlMode = ControlMode,
+                ResizeMode = ResizeMode,
+                LowVRAM = LowVRAM
+            };
+        }
     }
 }

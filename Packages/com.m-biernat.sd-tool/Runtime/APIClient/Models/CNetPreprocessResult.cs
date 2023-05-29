@@ -1,22 +1,19 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SDTool.APIClient.Serialization;
 using UnityEngine;
 
 namespace SDTool.APIClient.Models
 {
-    public class Txt2ImgResult
+    public class CNetPreprocessResult
     {
         [JsonProperty("images")]
         public string[] Images { get; private set; }
-
-        [JsonProperty("parameters")]
-        public Txt2Img Parameters { get; private set; }
 
         [JsonProperty("info")]
         public string Info { get; private set; }
     }
 
-    public class Txt2ImgResultT2D : Txt2ImgResult
+    public class CNetPreprocessResultT2D : CNetPreprocessResult
     {
         [JsonProperty("images", ItemConverterType = typeof(Texture2DConverter))]
         public new Texture2D[] Images { get; private set; }

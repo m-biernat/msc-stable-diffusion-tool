@@ -5,13 +5,13 @@ using UnityEngine;
 namespace SDTool.APIClient.Models
 {
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
-    public class ControlNet
+    public class CNetUnit
     {
-        [JsonProperty("input_image"), JsonConverter(typeof(Texture2DConverter))]
-        public Texture2D InputImage { get; set; }
+        [JsonProperty("input_image")]
+        public string InputImage { get; set; }
 
-        [JsonProperty("mask"), JsonConverter(typeof(Texture2DConverter))]
-        public Texture2D Mask { get; set; }
+        [JsonProperty("mask")]
+        public string Mask { get; set; }
 
         [JsonProperty("module")]
         public string Module { get; set; }
@@ -23,7 +23,7 @@ namespace SDTool.APIClient.Models
         public float? Weight { get; set; }
 
         [JsonProperty("resize_mode")]
-        public ResizeMode? ResizeMode { get; set; }
+        public CNetResizeMode? ResizeMode { get; set; }
 
         [JsonProperty("lowvram")]
         public bool? LowVRAM { get; set; }
@@ -48,6 +48,15 @@ namespace SDTool.APIClient.Models
 
         [JsonProperty("pixel_perfect")]
         public bool? PixelPerfect { get; set; }
+    }
+
+    public class CNetUnitT2D : CNetUnit
+    {
+        [JsonProperty("input_image"), JsonConverter(typeof(Texture2DConverter))]
+        public new Texture2D InputImage { get; set; }
+
+        [JsonProperty("mask"), JsonConverter(typeof(Texture2DConverter))]
+        public new Texture2D Mask { get; set; }
     }
 
     public enum CNetResizeMode : int { JustResize, ScaleToFit, Envelope }

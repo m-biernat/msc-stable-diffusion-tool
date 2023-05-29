@@ -17,13 +17,13 @@ namespace SDTool.Editor.UI
         static SDToolProfileEditor _profileEditor;
         UnityEditor.Editor _settingsEditor;
 
-        static SDToolProfile _currnetProfile;
+        static SDToolProfile _currentProfile;
 
         void OnEnable()
         {
             _settingsEditor = UnityEditor.Editor.CreateEditor(Settings.instance);
 
-            if (_currnetProfile)
+            if (_currentProfile)
                 _profileEditor = CreateProfileEditor();
         }
 
@@ -52,43 +52,73 @@ namespace SDTool.Editor.UI
         {
             EditorGUILayout.BeginHorizontal();
 
-            ManageProfile(ExtendedGUI.ObjectField("", _currnetProfile));
+            ManageProfile(ExtendedGUI.ObjectField("", _currentProfile));
 
             if (GUILayout.Button("New", GUILayout.MaxWidth(42)))
-                Debug.Log("");
-            //ManageProfile(SDToolManager.CreateProfile());
+                ManageProfile(SDToolManager.CreateProfile());
 
             if (GUILayout.Button("Clone", GUILayout.MaxWidth(48)))
-                Debug.Log("");
-                //ManageProfile(SDToolManager.CloneProfile(_currnetProfile));
+                ManageProfile(SDToolManager.CloneProfile(_currentProfile));
 
             EditorGUILayout.EndHorizontal();
 
             ExtendedGUI.Separator();
 
-            if (_currnetProfile)
-                _profileEditor.DrawInWindow();
+            if (_currentProfile)
+                DrawProfile();
             else
-            {
-                ExtendedGUI.BeginAlignCenter();
-
-                GUILayout.Label("No SDTool Profile selected!");
-
-                ExtendedGUI.EndAlignCenter();
-            }
+                NoProfileSelected();
         }
 
         static void ManageProfile(SDToolProfile profile)
         {
-            if (_currnetProfile != profile)
+            if (_currentProfile != profile)
             {
-                _currnetProfile = profile;
+                _currentProfile = profile;
                 _profileEditor = CreateProfileEditor();
             }
         }
 
+        static void DrawProfile()
+        {
+            _profileEditor.DrawInWindow();
+
+            GUILayout.FlexibleSpace();
+
+            ExtendedGUI.BeginAlignCenter();
+
+            if (ExtendedGUI.Button("Generate", 50, 125))
+                SDToolManager.Process(_currentProfile);
+
+            EditorGUILayout.Space(16);
+
+            EditorGUILayout.BeginVertical();
+
+            if (ExtendedGUI.Button("Preprocess", 24, 125))
+                SDToolManager.Preprocess(_currentProfile);
+
+            if (ExtendedGUI.Button("Interrupt", 24, 125))
+                SDToolManager.SaveAsSprite(_currentProfile.ControlNet.InputImage, _currentProfile);
+                //Debug.Log("Interrupt");
+
+            EditorGUILayout.EndVertical();
+
+            ExtendedGUI.EndAlignCenter();
+
+            EditorGUILayout.Space();
+        }
+
+        void NoProfileSelected()
+        {
+            ExtendedGUI.BeginAlignCenter();
+
+            GUILayout.Label("No SDTool Profile selected!");
+
+            ExtendedGUI.EndAlignCenter();
+        }
+
         static SDToolProfileEditor CreateProfileEditor()
-            => (SDToolProfileEditor)UnityEditor.Editor.CreateEditor(_currnetProfile);
+            => (SDToolProfileEditor)UnityEditor.Editor.CreateEditor(_currentProfile);
 
         public static void Open(SDToolProfile profile)
         {

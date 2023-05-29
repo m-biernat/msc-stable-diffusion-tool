@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace SDTool.APIClient
 {
-    public static class DataProcessor<TResult> 
+    public static class RequestProcessor<TResult> 
         where TResult : class
     {
         public static async Task<TResult> GetAsync(string endpoint)
@@ -48,7 +48,7 @@ namespace SDTool.APIClient
         }
     }
     
-    public static class DataProcessor<TResult, TRequest> 
+    public static class RequestProcessor<TResult, TRequest> 
         where TResult : class 
         where TRequest : class
     {

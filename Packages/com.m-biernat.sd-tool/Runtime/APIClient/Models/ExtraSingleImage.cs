@@ -46,9 +46,18 @@ namespace SDTool.APIClient.Models
         [JsonProperty("upscale_first")]
         public bool? UpscaleFirst { get; set; }
 
-        [JsonProperty("image"), JsonConverter(typeof(Texture2DConverter))]
-        public Texture2D Image { get; set; }
+        [JsonProperty("rembg_model")]
+        public string RemBgModel { get; set; }
+
+        [JsonProperty("image")]
+        public string Image { get; set; }
     }
 
     public enum ResizeMode : int { A, B }
+
+    public class ExtraSingleImageT2D : ExtraSingleImage
+    {
+        [JsonProperty("image"), JsonConverter(typeof(Texture2DConverter))]
+        public new Texture2D Image { get; set; }
+    }
 }

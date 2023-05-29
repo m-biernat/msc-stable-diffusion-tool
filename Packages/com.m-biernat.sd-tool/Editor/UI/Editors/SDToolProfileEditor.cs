@@ -5,11 +5,11 @@ using UnityEngine;
 namespace SDTool.Editor.UI
 {
     [CustomEditor(typeof(SDToolProfile))]
-    public partial class SDToolProfileEditor : ExtendedEditor
+    public class SDToolProfileEditor : ExtendedEditor
     {
-        SDToolProfile _profile;
+        Vector2 _scroll;
 
-        void OnEnable() => _profile = (SDToolProfile)target;
+        bool _foldout = true;
 
         public override void OnInspectorGUI()
         {
@@ -27,35 +27,50 @@ namespace SDTool.Editor.UI
 
         public void DrawInInspector()
         {
+            var profile = (SDToolProfile)target;
+
             serializedObject.Update();
 
-            PropertyField(nameof(_profile.Txt2Img), "Text to Image");
+            PropertyField(nameof(profile.Txt2Img), "Text to Image");
 
             EditorGUILayout.Space(16);
 
-            PropertyField(nameof(_profile.ControlNet));
+            PropertyField(nameof(profile.ControlNet));
 
             EditorGUILayout.Space(16);
 
-            PropertyField(nameof(_profile.RemoveBackground));
+            PropertyField(nameof(profile.RemBgModel));
+
+            EditorGUILayout.Space(16);
+
+            _foldout = EditorGUILayout.Foldout(_foldout, "Settings");
+
+            ExtendedGUI.BeginIndent();
+            if (_foldout)
+            {
+                PropertyField(nameof(profile.UseControlNet));
+                PropertyField(nameof(profile.UseRemBg));
+
+                EditorGUILayout.Space();
+
+                PropertyField(nameof(profile.AutoSaveImages));
+            }
+            ExtendedGUI.EndIndent();
+
+            EditorGUILayout.Space(16);
 
             serializedObject.ApplyModifiedProperties();
         }
 
         public void DrawInWindow()
         {
+            _scroll = EditorGUILayout.BeginScrollView(_scroll);
+            
             DrawInInspector();
 
-            EditorGUILayout.Space();
+            EditorGUILayout.EndScrollView();
 
-            GUILayout.FlexibleSpace();
-
-            if(ExtendedGUI.Button("Generate", 32, 128))
-            {
-                Debug.Log("test");
-            }
-
-            EditorGUILayout.Space();
+            EditorGUILayout.Space(2);
         }
     }
 }

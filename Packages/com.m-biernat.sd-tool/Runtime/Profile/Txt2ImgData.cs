@@ -1,3 +1,4 @@
+using SDTool.APIClient.Models;
 using System;
 using UnityEngine;
 
@@ -39,5 +40,21 @@ namespace SDTool.Profile
         
         [field: SerializeField, Space()]
         public bool Tiling { get; private set; } = false;
+
+        public Txt2Img GetPayload()
+        {
+            return new Txt2Img()
+            {
+                Prompt = Prompt,
+                NegativePrompt = NegativePrompt,
+                SamplerName = Sampler,
+                Steps = Steps,
+                CfgScale = CfgScale,
+                Width = Width,
+                Height = Height,
+                NIter = BatchCount,
+                Tiling = Tiling
+            };
+        }
     }
 }
