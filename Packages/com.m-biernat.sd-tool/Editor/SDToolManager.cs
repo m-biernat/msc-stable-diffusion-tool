@@ -1,5 +1,6 @@
-using SDTool.Editor.UI;
+using NUnit.Framework.Internal;
 using SDTool.Profile;
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -35,31 +36,58 @@ namespace SDTool.Editor
             return AssetDatabase.LoadAssetAtPath<SDToolProfile>(clonePath);
         }
 
-        public static async void Process(SDToolProfile profile)
-        {
-            var result = await DataProcessor.ProcessAsync(profile);
-
-            ResultEditorWindow.Open(profile, result);
-        }
-
-        public static async void Preprocess(SDToolProfile profile)
+        public static async void Preprocess(SDToolProfile profile,
+                                            Action<SDToolProfile, Texture2D> callback)
         {
             var result = await DataProcessor.PreprocessAsync(profile);
 
-            PreprocessEditorWindow.Open(profile.ControlNet.InputImage, result);
+            callback.Invoke(profile, result);
         }
 
-        public static void SaveAsSprite(Texture2D image, SDToolProfile profile)
+        public static async void Process(SDToolProfile profile, 
+                                         Action<SDToolProfile, Texture2D[]> callback)
         {
-            var rect = new Rect(0, 0, image.width, image.height);
-            var pivot = new Vector2(.5f, .5f);
-            var sprite = Sprite.Create(image, rect, pivot);
-            
-            var path = AssetDatabase.GetAssetPath(profile);
-            path = path.Substring(0, path.Length - 6);
-            var assetPath = AssetDatabase.GenerateUniqueAssetPath($"IMG {path}.png");
+            var result = await DataProcessor.ProcessAsync(profile);
 
-            AssetDatabase.CreateAsset(sprite, assetPath);
+            if (profile.AutoSaveImages)
+                SaveImages(profile, result);
+            else
+                callback.Invoke(profile, result);
+        }    
+
+        public static void SaveImages(SDToolProfile profile, Texture2D[] images)
+        {
+            var path = GetPath(profile);
+
+            foreach (var image in images)
+                SaveImage(path, image);
+
+            AssetDatabase.Refresh();
+        }
+
+        public static void SaveImages(SDToolProfile profile, Texture2D[] images, bool[] selection)
+        {
+            var path = GetPath(profile);
+
+            for (int i = 0; i < images.Length; i++)
+                if (selection[i])
+                    SaveImage(path, images[i]);
+
+            AssetDatabase.Refresh();
+        }
+
+        static string GetPath(SDToolProfile profile)
+        {
+            var path = AssetDatabase.GetAssetPath(profile);
+            return path.Substring(0, path.Length - 6);
+        }
+
+        static void SaveImage(string path, Texture2D image)
+        {
+            var assetPath = AssetDatabase.GenerateUniqueAssetPath($"{path} Sprite.png");
+            var bytes = image.EncodeToPNG();
+
+            File.WriteAllBytes(assetPath, bytes);
         }
     }
 }

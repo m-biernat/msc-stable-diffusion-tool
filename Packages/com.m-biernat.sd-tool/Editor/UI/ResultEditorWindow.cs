@@ -17,6 +17,7 @@ namespace SDTool.Editor.UI
 
         public static void Open(SDToolProfile profile, Texture2D[] results)
         {
+            _profile = profile;
             _results = results;
 
             _selection = new bool[results.Length];
@@ -98,17 +99,18 @@ namespace SDTool.Editor.UI
             if (_singleImage)
             {
                 if (ExtendedGUI.Button("Save", 30, 100))
-                    SDToolManager.SaveAsSprite(_results[0], _profile);
+                    SaveAll();
             }
             else
             {
                 if (ExtendedGUI.Button("Save All", 30, 100))
-                    Debug.Log("Save All");
+                    SaveAll();
 
                 EditorGUILayout.Space();
 
                 if (ExtendedGUI.Button("Save Selected", 30, 100))
-                    Debug.Log("Save Selected");
+                    SaveSelected();
+                    
             }
             
             EditorGUILayout.Space();
@@ -120,8 +122,21 @@ namespace SDTool.Editor.UI
             EditorGUILayout.Space(12);
         }
 
+        void SaveAll()
+        {
+            SDToolManager.SaveImages(_profile, _results);
+            Discard();
+        }
+
+        void SaveSelected()
+        {
+            SDToolManager.SaveImages(_profile, _results, _selection);
+            Discard();
+        }
+
         void Discard()
         {
+            _profile = null;
             _results = null;
             _selection = null;
             Close();

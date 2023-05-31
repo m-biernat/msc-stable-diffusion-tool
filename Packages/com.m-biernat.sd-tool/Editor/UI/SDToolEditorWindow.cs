@@ -1,6 +1,8 @@
 using SDTool.Profile;
 using UnityEditor;
 using UnityEngine;
+using static UnityEngine.Networking.UnityWebRequest;
+using UnityEngine.Profiling;
 
 namespace SDTool.Editor.UI
 {
@@ -86,20 +88,18 @@ namespace SDTool.Editor.UI
             GUILayout.FlexibleSpace();
 
             ExtendedGUI.BeginAlignCenter();
-
             if (ExtendedGUI.Button("Generate", 50, 125))
-                SDToolManager.Process(_currentProfile);
+                SDToolManager.Process(_currentProfile, ResultEditorWindow.Open);
 
             EditorGUILayout.Space(16);
 
             EditorGUILayout.BeginVertical();
 
             if (ExtendedGUI.Button("Preprocess", 24, 125))
-                SDToolManager.Preprocess(_currentProfile);
+                SDToolManager.Preprocess(_currentProfile, PreprocessEditorWindow.Open);
 
             if (ExtendedGUI.Button("Interrupt", 24, 125))
-                SDToolManager.SaveAsSprite(_currentProfile.ControlNet.InputImage, _currentProfile);
-                //Debug.Log("Interrupt");
+                Debug.Log("Interrupt");
 
             EditorGUILayout.EndVertical();
 

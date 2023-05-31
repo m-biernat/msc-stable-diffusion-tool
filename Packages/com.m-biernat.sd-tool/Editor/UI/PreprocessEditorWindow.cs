@@ -1,16 +1,17 @@
-﻿using UnityEditor;
+﻿using SDTool.Profile;
+using UnityEditor;
 using UnityEngine;
 
 namespace SDTool.Editor.UI
 {
     public class PreprocessEditorWindow : EditorWindow
     {
-        static Texture2D _input;
+        static SDToolProfile _profile;
         static Texture2D _result;
 
-        public static void Open(Texture2D input, Texture2D result)
+        public static void Open(SDToolProfile profile, Texture2D result)
         {
-            _input = input;
+            _profile = profile;
             _result = result;
 
             var window = 
@@ -29,7 +30,7 @@ namespace SDTool.Editor.UI
 
         void OnDisable()
         {
-            _input = null;
+            _profile = null;
             _result = null;
         }
 
@@ -37,7 +38,7 @@ namespace SDTool.Editor.UI
         {
             ExtendedGUI.BeginAlignCenter();
 
-            ShowImage("Input", _input);
+            ShowImage("Input", _profile.ControlNet.InputImage);
 
             EditorGUILayout.Space(16);
 
