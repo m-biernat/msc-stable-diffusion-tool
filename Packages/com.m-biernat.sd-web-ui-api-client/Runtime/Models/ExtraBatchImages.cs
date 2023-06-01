@@ -1,11 +1,11 @@
 using Newtonsoft.Json;
-using SDTool.APIClient.Serialization;
+using SDWebUIAPIClient.Serialization;
 using UnityEngine;
 
-namespace SDTool.APIClient.Models
+namespace SDWebUIAPIClient.Models
 {
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
-    public class ExtraSingleImage
+    public class ExtraBatchImages
     {
         [JsonProperty("resize_mode")]
         public ResizeMode? ResizeMode { get; set; }
@@ -49,15 +49,22 @@ namespace SDTool.APIClient.Models
         [JsonProperty("rembg_model")]
         public string RemBgModel { get; set; }
 
-        [JsonProperty("image")]
-        public string Image { get; set; }
+        [JsonProperty("imageList")]
+        public ImageList[] ImageList { get; set; }
     }
 
-    public enum ResizeMode : int { A, B }
-
-    public class ExtraSingleImageT2D : ExtraSingleImage
+    public class ImageList
     {
-        [JsonProperty("image"), JsonConverter(typeof(Texture2DConverter))]
-        public new Texture2D Image { get; set; }
+        [JsonProperty("data")]
+        public string Data { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+    }
+
+    public class ImageListT2D : ImageList
+    {
+        [JsonProperty("data"), JsonConverter(typeof(Texture2DConverter))]
+        public new Texture2D Data { get; set; }
     }
 }

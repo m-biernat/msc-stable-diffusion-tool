@@ -1,4 +1,4 @@
-using SDTool.APIClient.Models;
+using SDWebUIAPIClient.Models;
 using System;
 using UnityEngine;
 

@@ -1,7 +1,9 @@
 {
     "name": "SDTool",
     "rootNamespace": "SDTool",
-    "references": [],
+    "references": [
+        "GUID:fb685be6df6e91a429f575eb2e82ed6e"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

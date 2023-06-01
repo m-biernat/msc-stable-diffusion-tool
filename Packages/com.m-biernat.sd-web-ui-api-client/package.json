@@ -1,0 +1,21 @@
+{
+  "name": "com.m-biernat.sd-web-ui-api-client",
+  "version": "1.0.0",
+  "displayName": "SD Web UI API Client",
+  "description": "A library providing integration with AUTOMATIC1111's Stable Diffusion Web UI API",
+  "unity": "2021.3",
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.1.0"
+  },
+  "keywords": [
+    "stable",
+    "diffusion",
+    "web",
+    "ui",
+    "api",
+    "client"
+  ],
+  "author": {
+    "name": "Micha\u0142 Biernat"
+  }
+}

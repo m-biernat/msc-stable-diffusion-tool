@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using System;
 using UnityEngine;
 
-namespace SDTool.APIClient.Serialization
+namespace SDWebUIAPIClient.Serialization
 {
     public class Texture2DConverter : JsonConverter<Texture2D>
     {

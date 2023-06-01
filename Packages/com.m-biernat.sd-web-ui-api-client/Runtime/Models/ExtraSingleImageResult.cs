@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
-using SDTool.APIClient.Serialization;
+using SDWebUIAPIClient.Serialization;
 using UnityEngine;
 
-namespace SDTool.APIClient.Models
+namespace SDWebUIAPIClient.Models
 {
     public class ExtraSingleImageResult
     {

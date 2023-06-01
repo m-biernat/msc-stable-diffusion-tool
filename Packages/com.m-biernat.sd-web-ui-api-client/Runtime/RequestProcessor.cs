@@ -4,9 +4,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace SDTool.APIClient
+namespace SDWebUIAPIClient
 {
-    public static class RequestProcessor<TResult> 
+    public static class RequestProcessor<TResult>
         where TResult : class
     {
         public static async Task<TResult> GetAsync(string endpoint)
@@ -47,9 +47,9 @@ namespace SDTool.APIClient
             return result;
         }
     }
-    
-    public static class RequestProcessor<TResult, TRequest> 
-        where TResult : class 
+
+    public static class RequestProcessor<TResult, TRequest>
+        where TResult : class
         where TRequest : class
     {
         public static async Task<TResult> PostAsync(string endpoint, TRequest payload)

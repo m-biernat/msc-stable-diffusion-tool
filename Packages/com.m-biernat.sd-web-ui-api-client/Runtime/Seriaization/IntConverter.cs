@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using System;
 
-namespace SDTool.APIClient.Serialization
+namespace SDWebUIAPIClient.Serialization
 {
     public class IntConverter : JsonConverter<int>
     {

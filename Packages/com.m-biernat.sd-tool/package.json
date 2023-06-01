@@ -5,7 +5,7 @@
   "description": "A simple tool providing in-editor asset creation with Stable Diffusion",
   "unity": "2021.3",
   "dependencies": {
-    "com.unity.nuget.newtonsoft-json": "3.1.0",
+    "com.m-biernat.sd-web-ui-api-client": "1.0.0",
     "com.unity.2d.sprite": "1.0.0"
   },
   "keywords": [

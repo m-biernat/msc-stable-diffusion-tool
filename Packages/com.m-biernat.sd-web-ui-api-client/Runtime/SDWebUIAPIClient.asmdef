@@ -1,13 +1,8 @@
 {
-    "name": "SDTool.Editor",
-    "rootNamespace": "SDTool.Editor",
-    "references": [
-        "GUID:be3c940b257f6be4ca8d0eeb418b1951",
-        "GUID:fb685be6df6e91a429f575eb2e82ed6e"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "name": "SDWebUIAPIClient",
+    "rootNamespace": "SDWebUIAPIClient",
+    "references": [],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

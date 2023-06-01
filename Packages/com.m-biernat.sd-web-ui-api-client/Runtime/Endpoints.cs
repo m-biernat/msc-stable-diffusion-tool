@@ -1,4 +1,4 @@
-namespace SDTool.APIClient
+namespace SDWebUIAPIClient
 {
     public static class Endpoints
     {

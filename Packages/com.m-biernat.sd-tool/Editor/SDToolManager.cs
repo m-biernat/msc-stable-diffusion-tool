@@ -1,4 +1,3 @@
-using NUnit.Framework.Internal;
 using SDTool.Profile;
 using System;
 using System.IO;

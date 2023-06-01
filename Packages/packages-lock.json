@@ -5,8 +5,16 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "3.1.0",
+        "com.m-biernat.sd-web-ui-api-client": "1.0.0",
         "com.unity.2d.sprite": "1.0.0"
+      }
+    },
+    "com.m-biernat.sd-web-ui-api-client": {
+      "version": "file:com.m-biernat.sd-web-ui-api-client",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.1.0"
       }
     },
     "com.unity.2d.animation": {

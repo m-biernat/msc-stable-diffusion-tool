@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
-using SDTool.APIClient.Serialization;
-using UnityEngine;
+using SDWebUIAPIClient.Serialization;
 
-namespace SDTool.APIClient.Models
+namespace SDWebUIAPIClient.Models
 {
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
     public class Txt2Img

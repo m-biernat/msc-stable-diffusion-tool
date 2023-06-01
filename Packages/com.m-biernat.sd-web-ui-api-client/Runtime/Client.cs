@@ -2,7 +2,7 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-namespace SDTool.APIClient
+namespace SDWebUIAPIClient
 {
     public class Client
     {
@@ -12,15 +12,15 @@ namespace SDTool.APIClient
 
         static HttpClient _httpClient;
 
-        public static HttpClient ActiveInstance 
-        { 
-            get 
+        public static HttpClient ActiveInstance
+        {
+            get
             {
                 if (HasNoActiveInstance())
                     Init(LoadAddress());
 
                 return _httpClient;
-            } 
+            }
         }
 
         public static bool HasNoActiveInstance() => _httpClient == null;
@@ -51,7 +51,7 @@ namespace SDTool.APIClient
             SetTimeout(timeout);
         }
 
-        static void SetBaseAddress(string baseAddress) 
+        static void SetBaseAddress(string baseAddress)
             => _httpClient.BaseAddress = new Uri(baseAddress);
 
         static void SetTimeout(double valueInMinutes)
@@ -68,7 +68,7 @@ namespace SDTool.APIClient
 #endif
         }
 
-        public static void ResetAddress() 
+        public static void ResetAddress()
             => ChangeAddress(DefaultAddress);
     }
 }
