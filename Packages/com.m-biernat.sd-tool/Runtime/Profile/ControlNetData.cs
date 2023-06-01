@@ -22,7 +22,7 @@ namespace SDTool.Profile
         })]
         public string Model { get; private set; } = "control_v11p_sd15_canny [d14c016b]";
 
-        [field: SerializeField, Range(0, 2), Space()]
+        [field: SerializeField, Range(0, 2), Space(14)]
         public float ControlWeight { get; private set; } = 1;
 
         [field: SerializeField, Range(0, 1)]

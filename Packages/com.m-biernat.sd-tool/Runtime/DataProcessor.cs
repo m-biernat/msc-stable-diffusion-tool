@@ -65,5 +65,8 @@ namespace SDTool
 
             return results;
         }
+
+        public static async Task<object> Interrupt()
+            => await RequestProcessor<object>.PostAsync(Endpoints.Interrupt);
     }
 }

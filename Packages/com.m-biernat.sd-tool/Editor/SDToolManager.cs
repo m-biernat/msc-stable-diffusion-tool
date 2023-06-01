@@ -35,6 +35,8 @@ namespace SDTool.Editor
             return AssetDatabase.LoadAssetAtPath<SDToolProfile>(clonePath);
         }
 
+        public static async void Interrupt() => await DataProcessor.Interrupt();
+
         public static async void Preprocess(SDToolProfile profile,
                                             Action<SDToolProfile, Texture2D> callback)
         {

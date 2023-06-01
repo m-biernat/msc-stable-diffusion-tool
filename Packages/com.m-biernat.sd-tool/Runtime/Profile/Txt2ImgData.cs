@@ -13,7 +13,10 @@ namespace SDTool.Profile
         [field: SerializeField, TextArea(1, 4), Space()]
         public string NegativePrompt { get; private set; } = "";
 
-        [field: SerializeField, Space(), Dropdown(new string[] 
+        [field: SerializeField, Space()]
+        public SDToolStyle Style { get; private set; }
+
+        [field: SerializeField, Space(14), Dropdown(new string[] 
         { 
             "Euler a", "Euler", "LMS", "Heun", "DPM2", "DPM2 a", 
             "DPM++ 2S a", "DPM++ 2M", "DPM++ SDE", "DPM fast",
@@ -37,13 +40,19 @@ namespace SDTool.Profile
 
         [field: SerializeField, Range(1, 100), Space()]
         public int BatchCount { get; private set; } = 1;
+
+        [field: SerializeField, Range(1, 8)]
+        public int SingleBatchSize { get; private set; } = 1;
+
+        [field: SerializeField, Range(-1, 999999), Space()]
+        public int Seed { get; private set; } = -1;
         
         [field: SerializeField, Space()]
         public bool Tiling { get; private set; } = false;
 
         public Txt2Img GetPayload()
         {
-            return new Txt2Img()
+            var payload = new Txt2Img()
             {
                 Prompt = Prompt,
                 NegativePrompt = NegativePrompt,
@@ -53,8 +62,15 @@ namespace SDTool.Profile
                 Width = Width,
                 Height = Height,
                 NIter = BatchCount,
+                BatchSize = SingleBatchSize,
+                Seed = Seed,
                 Tiling = Tiling
             };
+
+            if (Style)
+                Style.Apply(payload);
+
+            return payload;
         }
     }
 }

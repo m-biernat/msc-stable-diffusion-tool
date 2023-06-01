@@ -15,22 +15,10 @@ namespace SDWebUIAPIClient.Serialization
         {
             var imageData = Convert.FromBase64String(encodedData);
 
-            int width, height;
-            GetImageSize(imageData, out width, out height);
-
-            Texture2D texture = new Texture2D(width, height, TextureFormat.ARGB32, false, true);
+            Texture2D texture = new Texture2D(0, 0, TextureFormat.ARGB32, false, true);
             texture.LoadImage(imageData);
 
             return texture;
         }
-
-        static void GetImageSize(byte[] imageData, out int width, out int height)
-        {
-            width = ReadInt(imageData, 3 + 15);
-            height = ReadInt(imageData, 3 + 15 + 2 + 2);
-        }
-
-        static int ReadInt(byte[] imageData, int offset)
-            => imageData[offset] << 8 | imageData[offset + 1];
     }
 }

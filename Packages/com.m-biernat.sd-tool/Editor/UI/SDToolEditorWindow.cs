@@ -98,8 +98,8 @@ namespace SDTool.Editor.UI
             if (ExtendedGUI.Button("Preprocess", 24, 125))
                 SDToolManager.Preprocess(_currentProfile, PreprocessEditorWindow.Open);
 
-            if (ExtendedGUI.Button("Interrupt", 24, 125))
-                Debug.Log("Interrupt");
+            if (ExtendedGUI.Button("Cancel", 24, 125))
+                SDToolManager.Interrupt();
 
             EditorGUILayout.EndVertical();
 
