@@ -1,6 +1,5 @@
 ﻿using SDWebUIAPIClient.Models;
 using SDWebUIAPIClient;
-using SDTool.Profile;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -8,7 +7,7 @@ namespace SDTool
 {
     public static class DataProcessor
     {
-        public static async Task<Texture2D> PreprocessAsync(SDToolProfile profile)
+        public static async Task<Texture2D> PreprocessAsync(ProfileData profile)
         {
             var payload = profile.ControlNet.GetPreprocessPayload();
 
@@ -19,7 +18,7 @@ namespace SDTool
             return result.Images[0];
         }
 
-        public static async Task<Texture2D[]> ProcessAsync(SDToolProfile profile)
+        public static async Task<Texture2D[]> ProcessAsync(ProfileData profile)
         {
             var txt2ImgPayload = profile.Txt2Img.GetPayload();
 

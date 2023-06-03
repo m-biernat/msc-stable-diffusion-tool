@@ -4,7 +4,7 @@ using UnityEngine;
 namespace SDTool.Profile
 {
     [CreateAssetMenu(fileName = "SDTool Style", menuName = "SD Tool/Style")]
-    public class SDToolStyle : ScriptableObject
+    public class StyleData : ScriptableObject
     {
         [field: SerializeField, TextArea(1, 4)]
         public string Prompt { get; private set; } = "";
@@ -16,7 +16,7 @@ namespace SDTool.Profile
         {
             if (Prompt != "")
                 payload.Prompt = $"{payload.Prompt}, {Prompt}";
-            
+
             if (NegativePrompt != "")
                 payload.NegativePrompt = $"{payload.NegativePrompt}, {NegativePrompt}";
         }

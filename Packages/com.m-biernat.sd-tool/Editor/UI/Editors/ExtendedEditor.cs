@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SDTool.Editor.UI
 {
-    public class ExtendedEditor : UnityEditor.Editor
+    public abstract class ExtendedEditor : UnityEditor.Editor
     {
         public SerializedProperty FindField(string fieldName)
             => serializedObject.FindField(fieldName);

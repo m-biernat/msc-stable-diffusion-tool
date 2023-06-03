@@ -1,12 +1,11 @@
-﻿using SDTool.Profile;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace SDTool.Editor.UI
 {
     public class ResultEditorWindow : EditorWindow
     {
-        static SDToolProfile _profile;
+        static ProfileData _profile;
         static Texture2D[] _results;
 
         static bool[] _selection;
@@ -15,7 +14,7 @@ namespace SDTool.Editor.UI
         static Vector2 _maxSize;
         Vector2 _scroll;
 
-        public static void Open(SDToolProfile profile, Texture2D[] results)
+        public static void Open(ProfileData profile, Texture2D[] results)
         {
             _profile = profile;
             _results = results;

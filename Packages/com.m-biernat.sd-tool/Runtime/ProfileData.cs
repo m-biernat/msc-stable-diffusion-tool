@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using SDTool.Profile;
+using UnityEngine;
 
-namespace SDTool.Profile
+namespace SDTool
 {
     [CreateAssetMenu(fileName = "SDTool Profile", menuName = "SD Tool/Profile")]
-    public class SDToolProfile : ScriptableObject
+    public class ProfileData : SDToolAsset
     {
         [field: SerializeField]
         public Txt2ImgData Txt2Img { get; private set; }

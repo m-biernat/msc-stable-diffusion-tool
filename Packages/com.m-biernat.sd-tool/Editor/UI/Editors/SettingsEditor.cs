@@ -1,18 +1,16 @@
 using UnityEditor;
-using UnityEngine;
 
 namespace SDTool.Editor.UI
 {
     [CustomEditor(typeof(Settings))]
-    public class SettingsEditor : UnityEditor.Editor
+    public class SettingsEditor : ExtendedEditor
     {
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
             var instance = Settings.instance;
 
-            //UIPropertyField(nameof(instance.ServerAddress));
-            EditorGUILayout.PropertyField(serializedObject.FindField(nameof(Settings.instance.ServerAddress)));
+            PropertyField(nameof(instance.ServerAddress));
 
             EditorGUILayout.Space();
 

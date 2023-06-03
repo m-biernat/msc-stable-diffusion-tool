@@ -1,33 +1,43 @@
-using SDTool.Profile;
+using System;
 using UnityEditor;
 using UnityEngine;
-using static UnityEngine.Networking.UnityWebRequest;
-using UnityEngine.Profiling;
 
 namespace SDTool.Editor.UI
 {
     class SDToolEditorWindow : EditorWindow
     {
-        static ToolbarItem _toolbarSelection = ToolbarItem.General;
-        enum ToolbarItem { General, Settings }
+        static ToolbarItem _toolbarSelection = ToolbarItem.Single;
+        
+        enum ToolbarItem { Single, Batch, Settings }
 
         readonly string[] _toolbarLabels = {
-            nameof(ToolbarItem.General),
+            nameof(ToolbarItem.Single),
+            nameof(ToolbarItem.Batch),
             nameof(ToolbarItem.Settings)
         };
 
-        static SDToolProfileEditor _profileEditor;
         UnityEditor.Editor _settingsEditor;
+        static ProfileEditor _profileEditor;
+        static BatchEditor _batchEditor;
 
-        static SDToolProfile _currentProfile;
+        static ProfileData _currentProfile;
+        static BatchData _currentBatch;
 
         void OnEnable()
         {
             _settingsEditor = UnityEditor.Editor.CreateEditor(Settings.instance);
 
             if (_currentProfile)
-                _profileEditor = CreateProfileEditor();
+                _profileEditor = CreateAssetEditor<ProfileEditor, ProfileData>(_currentProfile);
+
+            if (_currentBatch)
+                _batchEditor = CreateAssetEditor<BatchEditor, BatchData>(_currentBatch);
         }
+
+        static TEditor CreateAssetEditor<TEditor, TObject>(TObject asset)
+            where TEditor : UnityEditor.Editor
+            where TObject : SDToolAsset
+            => (TEditor)UnityEditor.Editor.CreateEditor(asset);
 
         void OnGUI()
         {
@@ -39,8 +49,11 @@ namespace SDTool.Editor.UI
 
             switch (_toolbarSelection)
             {
-                case ToolbarItem.General:
-                    General();
+                case ToolbarItem.Single:
+                    ShowAsset(ref _profileEditor, ref _currentProfile, "Profile", DrawProfile);
+                    break;
+                case ToolbarItem.Batch:
+                    ShowAsset(ref _batchEditor, ref _currentBatch, "Batch", DrawBatch);
                     break;
                 case ToolbarItem.Settings:
                     _settingsEditor.OnInspectorGUI();
@@ -50,38 +63,56 @@ namespace SDTool.Editor.UI
             }
         }
 
-        void General()
+        void ShowAsset<TEditor, TObject>(ref TEditor editor,
+                                         ref TObject current,
+                                         string name,
+                                         Action drawContent)
+            where TEditor : UnityEditor.Editor
+            where TObject : SDToolAsset
         {
             EditorGUILayout.BeginHorizontal();
 
-            ManageProfile(ExtendedGUI.ObjectField("", _currentProfile));
+            ManageAsset(ref editor, ref current, ExtendedGUI.ObjectField("", current));
 
             if (GUILayout.Button("New", GUILayout.MaxWidth(42)))
-                ManageProfile(SDToolManager.CreateProfile());
+                ManageAsset(ref editor, ref current, SDToolManager.CreateAsset<TObject>(name));
 
             if (GUILayout.Button("Clone", GUILayout.MaxWidth(48)))
-                ManageProfile(SDToolManager.CloneProfile(_currentProfile));
+                ManageAsset(ref editor, ref current, SDToolManager.CloneAsset(current));
 
             EditorGUILayout.EndHorizontal();
 
             ExtendedGUI.Separator();
 
-            if (_currentProfile)
-                DrawProfile();
+            if (current)
+                drawContent.Invoke();
             else
-                NoProfileSelected();
+                NoAssetSelected(name);
         }
 
-        static void ManageProfile(SDToolProfile profile)
+        static void ManageAsset<TObject, TEditor>(ref TEditor editor,
+                                                  ref TObject current,
+                                                  TObject newAsset)
+            where TEditor : UnityEditor.Editor
+            where TObject : SDToolAsset
         {
-            if (_currentProfile != profile)
+            if (current != newAsset)
             {
-                _currentProfile = profile;
-                _profileEditor = CreateProfileEditor();
+                current = newAsset;
+                editor = CreateAssetEditor<TEditor, TObject>(newAsset);
             }
         }
 
-        static void DrawProfile()
+        void NoAssetSelected(string name)
+        {
+            ExtendedGUI.BeginAlignCenter();
+
+            GUILayout.Label($"No SDTool {name} selected!");
+
+            ExtendedGUI.EndAlignCenter();
+        }
+
+        void DrawProfile()
         {
             _profileEditor.DrawInWindow();
 
@@ -108,28 +139,44 @@ namespace SDTool.Editor.UI
             EditorGUILayout.Space();
         }
 
-        void NoProfileSelected()
+        void DrawBatch()
         {
-            ExtendedGUI.BeginAlignCenter();
+            _batchEditor.DrawInWindow();
 
-            GUILayout.Label("No SDTool Profile selected!");
+            GUILayout.FlexibleSpace();
+
+            ExtendedGUI.BeginAlignCenter();
+            if (ExtendedGUI.Button("Generate", 50, 125))
+                SDToolManager.Process(_currentBatch);
+
+            EditorGUILayout.Space(16);
+
+            if (ExtendedGUI.Button("Cancel", 50, 125))
+                SDToolManager.Interrupt();
 
             ExtendedGUI.EndAlignCenter();
-        }
 
-        static SDToolProfileEditor CreateProfileEditor()
-            => (SDToolProfileEditor)UnityEditor.Editor.CreateEditor(_currentProfile);
-
-        public static void Open(SDToolProfile profile)
-        {
-            OpenWindow();
-            ManageProfile(profile);
+            EditorGUILayout.Space();
         }
 
         [MenuItem("Tools/SD Tool")]
         static void MenuOpenWindow() => OpenWindow();
 
-        static void OpenWindow() 
+        static void OpenWindow()
             => GetWindow<SDToolEditorWindow>("SD Tool");
+
+        public static void Open(ProfileData asset)
+        {
+            OpenWindow();
+            ManageAsset(ref _profileEditor, ref _currentProfile, asset);
+            _toolbarSelection = ToolbarItem.Single;
+        }
+
+        public static void Open(BatchData asset)
+        {
+            OpenWindow();
+            ManageAsset(ref _batchEditor, ref _currentBatch, asset);
+            _toolbarSelection = ToolbarItem.Batch;
+        }
     }
 }

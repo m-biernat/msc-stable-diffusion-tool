@@ -1,5 +1,5 @@
 ﻿using SDTool.Editor.UI;
-using SDTool.Profile;
+using System.Diagnostics;
 using UnityEditor;
 using UnityEditor.Callbacks;
 
@@ -10,12 +10,25 @@ namespace SDTool.Editor
         [OnOpenAsset()]
         static bool OpenInEditorWindow(int instanceID, int line)
         {
-            var obj = EditorUtility.InstanceIDToObject(instanceID) as SDToolProfile;
+            var obj = EditorUtility.InstanceIDToObject(instanceID) as SDToolAsset;
 
             if (obj)
             {
-                SDToolEditorWindow.Open(obj);
-                return true;
+                var profile = obj as ProfileData;
+
+                if (profile)
+                {
+                    SDToolEditorWindow.Open(profile);
+                    return true;
+                }
+
+                var autorun = obj as BatchData;
+
+                if (autorun)
+                {
+                    SDToolEditorWindow.Open(autorun);
+                    return true;
+                }
             }
 
             return false;

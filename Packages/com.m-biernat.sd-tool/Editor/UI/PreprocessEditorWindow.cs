@@ -1,15 +1,14 @@
-﻿using SDTool.Profile;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace SDTool.Editor.UI
 {
     public class PreprocessEditorWindow : EditorWindow
     {
-        static SDToolProfile _profile;
+        static ProfileData _profile;
         static Texture2D _result;
 
-        public static void Open(SDToolProfile profile, Texture2D result)
+        public static void Open(ProfileData profile, Texture2D result)
         {
             _profile = profile;
             _result = result;

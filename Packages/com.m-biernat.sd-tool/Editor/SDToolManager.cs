@@ -1,4 +1,3 @@
-using SDTool.Profile;
 using System;
 using System.IO;
 using UnityEditor;
@@ -8,45 +7,45 @@ namespace SDTool.Editor
 {
     public static class SDToolManager
     {
-        public static SDToolProfile CreateProfile()
+        public static T CreateAsset<T>(string name) where T : SDToolAsset
         {
             var assetPath = AssetDatabase.GenerateUniqueAssetPath(
-                "Assets/New SDTool Profile.asset");
+                $"Assets/New SDTool {name}.asset");
 
-            var instance = ScriptableObject.CreateInstance<SDToolProfile>();
+            var instance = ScriptableObject.CreateInstance<T>();
             AssetDatabase.CreateAsset(instance, assetPath);
 
-            return AssetDatabase.LoadAssetAtPath<SDToolProfile>(assetPath);
+            return AssetDatabase.LoadAssetAtPath<T>(assetPath);
         }
 
-        public static SDToolProfile CloneProfile(SDToolProfile profile)
+        public static T CloneAsset<T>(T asset) where T : SDToolAsset
         {
-            if (!profile) return null;
+            if (!asset) return null;
 
-            var assetPath = AssetDatabase.GetAssetPath(profile);
+            var assetPath = AssetDatabase.GetAssetPath(asset);
             var clonePath = AssetDatabase.GenerateUniqueAssetPath(assetPath);
 
             if (!AssetDatabase.CopyAsset(assetPath, clonePath))
             {
-                Debug.LogWarning($"Failed to copy {profile.name}");
-                return profile;
+                Debug.LogWarning($"Failed to copy {asset.name}");
+                return asset;
             }
 
-            return AssetDatabase.LoadAssetAtPath<SDToolProfile>(clonePath);
+            return AssetDatabase.LoadAssetAtPath<T>(clonePath);
         }
 
         public static async void Interrupt() => await DataProcessor.Interrupt();
 
-        public static async void Preprocess(SDToolProfile profile,
-                                            Action<SDToolProfile, Texture2D> callback)
+        public static async void Preprocess(ProfileData profile,
+                                            Action<ProfileData, Texture2D> callback)
         {
             var result = await DataProcessor.PreprocessAsync(profile);
 
             callback.Invoke(profile, result);
         }
 
-        public static async void Process(SDToolProfile profile, 
-                                         Action<SDToolProfile, Texture2D[]> callback)
+        public static async void Process(ProfileData profile, 
+                                         Action<ProfileData, Texture2D[]> callback)
         {
             var result = await DataProcessor.ProcessAsync(profile);
 
@@ -54,9 +53,20 @@ namespace SDTool.Editor
                 SaveImages(profile, result);
             else
                 callback.Invoke(profile, result);
-        }    
+        }
 
-        public static void SaveImages(SDToolProfile profile, Texture2D[] images)
+        public static async void Process(BatchData batch)
+        {
+            var profiles = batch.PrepareProfiles();
+
+            foreach (var profile in profiles)
+            {
+                var result = await DataProcessor.ProcessAsync(profile);
+                SaveImages(profile, result);
+            }
+        }
+
+        public static void SaveImages(ProfileData profile, Texture2D[] images)
         {
             var path = GetPath(profile);
 
@@ -66,7 +76,7 @@ namespace SDTool.Editor
             AssetDatabase.Refresh();
         }
 
-        public static void SaveImages(SDToolProfile profile, Texture2D[] images, bool[] selection)
+        public static void SaveImages(ProfileData profile, Texture2D[] images, bool[] selection)
         {
             var path = GetPath(profile);
 
@@ -77,7 +87,7 @@ namespace SDTool.Editor
             AssetDatabase.Refresh();
         }
 
-        static string GetPath(SDToolProfile profile)
+        static string GetPath(ProfileData profile)
         {
             var path = AssetDatabase.GetAssetPath(profile);
             return path.Substring(0, path.Length - 6);

@@ -14,11 +14,11 @@ namespace SDTool.Profile
         public string NegativePrompt { get; private set; } = "";
 
         [field: SerializeField, Space()]
-        public SDToolStyle Style { get; private set; }
+        public StyleData Style { get; private set; }
 
-        [field: SerializeField, Space(14), Dropdown(new string[] 
-        { 
-            "Euler a", "Euler", "LMS", "Heun", "DPM2", "DPM2 a", 
+        [field: SerializeField, Space(14), Dropdown(new string[]
+        {
+            "Euler a", "Euler", "LMS", "Heun", "DPM2", "DPM2 a",
             "DPM++ 2S a", "DPM++ 2M", "DPM++ SDE", "DPM fast",
             "DPM adaptive", "LMS Karras", "DPM2 Karras",
             "DPM++ 2S a Karras", "DPM++ 2M Karras", "DPM++ SDE Karras",
@@ -46,7 +46,7 @@ namespace SDTool.Profile
 
         [field: SerializeField, Range(-1, 999999), Space()]
         public int Seed { get; private set; } = -1;
-        
+
         [field: SerializeField, Space()]
         public bool Tiling { get; private set; } = false;
 
@@ -71,6 +71,15 @@ namespace SDTool.Profile
                 Style.Apply(payload);
 
             return payload;
+        }
+
+        public void OverrideStyle(StyleData newStyle)
+            => Style = newStyle;
+
+        public void OverrideBatching(int count, int size)
+        {
+            BatchCount = count;
+            SingleBatchSize = size;
         }
     }
 }

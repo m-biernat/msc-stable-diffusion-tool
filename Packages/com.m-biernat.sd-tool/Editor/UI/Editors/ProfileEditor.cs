@@ -1,33 +1,18 @@
-using SDTool.Profile;
 using UnityEditor;
-using UnityEngine;
 
 namespace SDTool.Editor.UI
 {
-    [CustomEditor(typeof(SDToolProfile))]
-    public class SDToolProfileEditor : ExtendedEditor
+    [CustomEditor(typeof(ProfileData))]
+    public class ProfileEditor : SDToolAssetEditor
     {
-        Vector2 _scroll;
-
         bool _foldout = true;
 
-        public override void OnInspectorGUI()
+        protected override void OpenWindow()
+            => SDToolEditorWindow.Open((ProfileData)target);
+
+        protected override void DrawInInspector()
         {
-            EditorGUILayout.Space();
-            ExtendedGUI.BeginAlignCenter();
-
-            if (ExtendedGUI.Button("Open in SD Tool", 32, 120))
-                SDToolEditorWindow.Open((SDToolProfile)target);
-
-            ExtendedGUI.EndAlignCenter();
-            ExtendedGUI.EndIndent();
-
-            DrawInInspector();
-        }
-
-        public void DrawInInspector()
-        {
-            var profile = (SDToolProfile)target;
+            var profile = (ProfileData)target;
 
             serializedObject.Update();
 
@@ -60,17 +45,6 @@ namespace SDTool.Editor.UI
             EditorGUILayout.Space(16);
 
             serializedObject.ApplyModifiedProperties();
-        }
-
-        public void DrawInWindow()
-        {
-            _scroll = EditorGUILayout.BeginScrollView(_scroll);
-            
-            DrawInInspector();
-
-            EditorGUILayout.EndScrollView();
-
-            EditorGUILayout.Space(2);
         }
     }
 }
