@@ -10,6 +10,9 @@ namespace SDTool
         public ProfileData[] Profiles { get; private set; }
 
         [field: SerializeField, Space()]
+        public bool OverrideStyle { get; private set; } = true;
+
+        [field: SerializeField]
         public StyleData Style { get; private set; }
 
         [field: SerializeField, Space()]
@@ -23,7 +26,7 @@ namespace SDTool
 
         public ProfileData[] PrepareProfiles()
         {
-            if (!(Style && OverrideBatching))
+            if (!(OverrideStyle || OverrideBatching))
                 return Profiles;
 
             var profiles = new ProfileData[Profiles.Length];
@@ -31,8 +34,9 @@ namespace SDTool
             for (int i = 0; i < Profiles.Length; i++)
             {
                 profiles[i] = Instantiate(Profiles[i]);
+                profiles[i].SetOriginal(Profiles[i]);
 
-                if (Style)
+                if (OverrideStyle)
                     profiles[i].Txt2Img.OverrideStyle(Style);
 
                 if (OverrideBatching)

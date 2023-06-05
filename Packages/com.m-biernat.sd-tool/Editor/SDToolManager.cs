@@ -68,7 +68,7 @@ namespace SDTool.Editor
 
         public static void SaveImages(ProfileData profile, Texture2D[] images)
         {
-            var path = GetPath(profile);
+            var path = GetFilePath(profile);
 
             foreach (var image in images)
                 SaveImage(path, image);
@@ -78,7 +78,7 @@ namespace SDTool.Editor
 
         public static void SaveImages(ProfileData profile, Texture2D[] images, bool[] selection)
         {
-            var path = GetPath(profile);
+            var path = GetFilePath(profile);
 
             for (int i = 0; i < images.Length; i++)
                 if (selection[i])
@@ -87,15 +87,22 @@ namespace SDTool.Editor
             AssetDatabase.Refresh();
         }
 
-        static string GetPath(ProfileData profile)
+        static string GetFilePath(ProfileData profile)
         {
-            var path = AssetDatabase.GetAssetPath(profile);
-            return path.Substring(0, path.Length - 6);
+            var assetPath = AssetDatabase.GetAssetPath(profile.Original);
+            var path = assetPath.Substring(0, assetPath.Length - 6);
+
+            var style = profile.Txt2Img.Style;
+
+            if (style)
+                path = $"{path} {style.name}";
+
+            return $"{path} 0.png";
         }
 
         static void SaveImage(string path, Texture2D image)
         {
-            var assetPath = AssetDatabase.GenerateUniqueAssetPath($"{path} Sprite.png");
+            var assetPath = AssetDatabase.GenerateUniqueAssetPath(path);
             var bytes = image.EncodeToPNG();
 
             File.WriteAllBytes(assetPath, bytes);

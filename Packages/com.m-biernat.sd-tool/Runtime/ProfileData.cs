@@ -6,6 +6,11 @@ namespace SDTool
     [CreateAssetMenu(fileName = "SDTool Profile", menuName = "SD Tool/Profile")]
     public class ProfileData : SDToolAsset
     {
+        ProfileData _original;
+
+        public ProfileData Original 
+        { get => _original == null ? this : _original; }
+
         [field: SerializeField]
         public Txt2ImgData Txt2Img { get; private set; }
 
@@ -27,5 +32,11 @@ namespace SDTool
 
         [field: SerializeField]
         public bool AutoSaveImages { get; private set; }
+
+        public void SetOriginal(ProfileData profile)
+        {
+            if (Original != profile)
+                _original = profile;
+        }
     }
 }
