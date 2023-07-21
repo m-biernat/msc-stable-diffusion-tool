@@ -9,10 +9,12 @@ namespace SDTool.Editor
         [field: SerializeField]
         public string ServerAddress { get; private set; }
 
-        void OnEnable()
+        void OnEnable() => ServerAddress = Client.LoadAddress();
+
+        public static void MakeEditable()
         {
-            ServerAddress = Client.LoadAddress();
-            hideFlags &= ~HideFlags.NotEditable;
+            if (instance.hideFlags.HasFlag(HideFlags.NotEditable))
+                instance.hideFlags &= ~HideFlags.NotEditable;
         }
 
         public static void ChangeAddress()

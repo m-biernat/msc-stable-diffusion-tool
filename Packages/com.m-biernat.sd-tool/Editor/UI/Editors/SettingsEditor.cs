@@ -5,6 +5,8 @@ namespace SDTool.Editor.UI
     [CustomEditor(typeof(Settings))]
     public class SettingsEditor : ExtendedEditor
     {
+        void OnEnable() => Settings.MakeEditable();
+
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
