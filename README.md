@@ -38,7 +38,7 @@ SD Web UI API Client:
 
 ## Installation & Usage
 
-- Download the `Stable Diffusion Tool.zip` file;
+- Download the `stable-diffusion-tool.zip` file;
 - Unzip it in the `Packages` directory in the Unity project directory;
 - Check if the *SD Tool* and *SD Web UI API Client* are installed in the *Package Manager* window;
 - Install and run *Stable Diffusion Web UI* with:
@@ -51,7 +51,7 @@ SD Web UI API Client:
 - Change properties e.g., prompt, and press *Generate*;
 - You can run multiple profiles at once by creating a batch in the *Batch* tab.
 
-*The tool has been tested with Stable Diffusion Web UI 1.3, Stable Diffusion 1.5, and ControlNet v1.1.207 with Canny method.*
+*The tool has been tested with modified Stable Diffusion Web UI 1.3, Stable Diffusion 1.5, and ControlNet v1.1.207 with the Canny method. It should be working with later Web UI versions as well.*
 
 ## Tools & Dependencies
 
